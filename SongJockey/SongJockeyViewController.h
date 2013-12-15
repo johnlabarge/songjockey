@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ohstarterViewController : UIViewController
+@interface SongJockeyViewController : UIViewController
 
 @end

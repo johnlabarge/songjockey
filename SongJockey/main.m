@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#import "ohstarterAppDelegate.h"
+#import "SongJockeyAppDelegate.h"
 
 int main(int argc, char * argv[])
 {
     @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([ohstarterAppDelegate class]));
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([SongJockeyAppDelegate class]));
     }
 }

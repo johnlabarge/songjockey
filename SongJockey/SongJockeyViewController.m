@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 John La Barge. All rights reserved.
 //
 
-#import "ohstarterViewController.h"
+#import "SongJockeyViewController.h"
 
-@interface ohstarterViewController ()
+@interface SongJockeyViewController ()
 
 @end
 
-@implementation ohstarterViewController
+@implementation SongJockeyViewController
 
 - (void)viewDidLoad
 {

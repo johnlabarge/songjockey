@@ -12,9 +12,9 @@
 		63875240185E51A30057AB92 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6387523F185E51A30057AB92 /* UIKit.framework */; };
 		63875246185E51A30057AB92 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 63875244185E51A30057AB92 /* InfoPlist.strings */; };
 		63875248185E51A30057AB92 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 63875247185E51A30057AB92 /* main.m */; };
-		6387524C185E51A30057AB92 /* ohstarterAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6387524B185E51A30057AB92 /* ohstarterAppDelegate.m */; };
+		6387524C185E51A30057AB92 /* SongJockeyAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6387524B185E51A30057AB92 /* SongJockeyAppDelegate.m */; };
 		6387524F185E51A30057AB92 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6387524D185E51A30057AB92 /* Main.storyboard */; };
-		63875252185E51A30057AB92 /* ohstarterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63875251185E51A30057AB92 /* ohstarterViewController.m */; };
+		63875252185E51A30057AB92 /* SongJockeyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63875251185E51A30057AB92 /* SongJockeyViewController.m */; };
 		63875254185E51A30057AB92 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63875253185E51A30057AB92 /* Images.xcassets */; };
 		6387525B185E51A30057AB92 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6387525A185E51A30057AB92 /* XCTest.framework */; };
 		6387525C185E51A30057AB92 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6387523B185E51A30057AB92 /* Foundation.framework */; };
@@ -42,11 +42,11 @@
 		63875245185E51A30057AB92 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		63875247185E51A30057AB92 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		63875249185E51A30057AB92 /* SongJockey-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SongJockey-Prefix.pch"; sourceTree = "<group>"; };
-		6387524A185E51A30057AB92 /* ohstarterAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ohstarterAppDelegate.h; sourceTree = "<group>"; };
-		6387524B185E51A30057AB92 /* ohstarterAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ohstarterAppDelegate.m; sourceTree = "<group>"; };
+		6387524A185E51A30057AB92 /* SongJockeyAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SongJockeyAppDelegate.h; sourceTree = "<group>"; };
+		6387524B185E51A30057AB92 /* SongJockeyAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SongJockeyAppDelegate.m; sourceTree = "<group>"; };
 		6387524E185E51A30057AB92 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		63875250185E51A30057AB92 /* ohstarterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ohstarterViewController.h; sourceTree = "<group>"; };
-		63875251185E51A30057AB92 /* ohstarterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ohstarterViewController.m; sourceTree = "<group>"; };
+		63875250185E51A30057AB92 /* SongJockeyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SongJockeyViewController.h; sourceTree = "<group>"; };
+		63875251185E51A30057AB92 /* SongJockeyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SongJockeyViewController.m; sourceTree = "<group>"; };
 		63875253185E51A30057AB92 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		63875259185E51A30057AB92 /* SongJockeyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SongJockeyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6387525A185E51A30057AB92 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -112,11 +112,11 @@
 		63875241185E51A30057AB92 /* SongJockey */ = {
 			isa = PBXGroup;
 			children = (
-				6387524A185E51A30057AB92 /* ohstarterAppDelegate.h */,
-				6387524B185E51A30057AB92 /* ohstarterAppDelegate.m */,
+				6387524A185E51A30057AB92 /* SongJockeyAppDelegate.h */,
+				6387524B185E51A30057AB92 /* SongJockeyAppDelegate.m */,
 				6387524D185E51A30057AB92 /* Main.storyboard */,
-				63875250185E51A30057AB92 /* ohstarterViewController.h */,
-				63875251185E51A30057AB92 /* ohstarterViewController.m */,
+				63875250185E51A30057AB92 /* SongJockeyViewController.h */,
+				63875251185E51A30057AB92 /* SongJockeyViewController.m */,
 				63875253185E51A30057AB92 /* Images.xcassets */,
 				63875242185E51A30057AB92 /* Supporting Files */,
 			);
@@ -250,9 +250,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63875252185E51A30057AB92 /* ohstarterViewController.m in Sources */,
+				63875252185E51A30057AB92 /* SongJockeyViewController.m in Sources */,
 				63875248185E51A30057AB92 /* main.m in Sources */,
-				6387524C185E51A30057AB92 /* ohstarterAppDelegate.m in Sources */,
+				6387524C185E51A30057AB92 /* SongJockeyAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

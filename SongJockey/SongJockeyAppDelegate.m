@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 John La Barge. All rights reserved.
 //
 
-#import "ohstarterAppDelegate.h"
+#import "SongJockeyAppDelegate.h"
 
-@implementation ohstarterAppDelegate
+@implementation SongJockeyAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
