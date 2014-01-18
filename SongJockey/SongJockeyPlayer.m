@@ -165,12 +165,12 @@
     __weak SongJockeyPlayer * me = self;
     dispatch_async(_playerLoadingQueue, ^{
         while (true) {
-            NSLog(@"busy wait %@", self.currentSong.songTitle);
-            if (self.currentPlayer.status == AVPlayerStatusReadyToPlay && self.currentPlayer.status == AVPlayerItemStatusReadyToPlay)
+            NSLog(@"busy wait %@", me.currentSong.songTitle);
+            if (me.currentPlayer.status == AVPlayerStatusReadyToPlay && me.currentPlayer.status == AVPlayerItemStatusReadyToPlay)
                 break;
         }
         [me.currentPlayer play];
-        [me.currentPlayer seekToTime:CMTimeMake(self.currentSong.startSeconds,1)];
+        [me.currentPlayer seekToTime:CMTimeMake(me.currentSong.startSeconds,1)];
         
         [me createTimer];
     });
