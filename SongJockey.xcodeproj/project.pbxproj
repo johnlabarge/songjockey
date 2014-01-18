@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6311472C186E6BFE003A3E02 /* songcell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6311472B186E6BFE003A3E02 /* songcell.xib */; };
+		6311472F186E6C40003A3E02 /* SongCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6311472E186E6C40003A3E02 /* SongCell.m */; };
 		6387523C185E51A30057AB92 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6387523B185E51A30057AB92 /* Foundation.framework */; };
 		6387523E185E51A30057AB92 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6387523D185E51A30057AB92 /* CoreGraphics.framework */; };
 		63875240185E51A30057AB92 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6387523F185E51A30057AB92 /* UIKit.framework */; };
@@ -21,6 +23,9 @@
 		6387525D185E51A30057AB92 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6387523F185E51A30057AB92 /* UIKit.framework */; };
 		63875265185E51A30057AB92 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 63875263185E51A30057AB92 /* InfoPlist.strings */; };
 		63875267185E51A30057AB92 /* SongJockeyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 63875266185E51A30057AB92 /* SongJockeyTests.m */; };
+		63B160B2186F9B2600A2EF54 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B160B1186F9B2600A2EF54 /* AVFoundation.framework */; };
+		63B160B5186F9EED00A2EF54 /* SongJockeyPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B160B4186F9EED00A2EF54 /* SongJockeyPlayer.m */; };
+		63B160B8186FA17F00A2EF54 /* SongJockeySong.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B160B7186FA17F00A2EF54 /* SongJockeySong.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +39,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6311472A186E6325003A3E02 /* MPMediaItemWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPMediaItemWrapper.h; sourceTree = "<group>"; };
+		6311472B186E6BFE003A3E02 /* songcell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = songcell.xib; sourceTree = "<group>"; };
+		6311472D186E6C40003A3E02 /* SongCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SongCell.h; path = SongJockey/SongCell.h; sourceTree = "<group>"; };
+		6311472E186E6C40003A3E02 /* SongCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SongCell.m; path = SongJockey/SongCell.m; sourceTree = "<group>"; };
 		63875238185E51A30057AB92 /* SongJockey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SongJockey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6387523B185E51A30057AB92 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6387523D185E51A30057AB92 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -53,6 +62,11 @@
 		63875262185E51A30057AB92 /* SongJockeyTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SongJockeyTests-Info.plist"; sourceTree = "<group>"; };
 		63875264185E51A30057AB92 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		63875266185E51A30057AB92 /* SongJockeyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SongJockeyTests.m; sourceTree = "<group>"; };
+		63B160B1186F9B2600A2EF54 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		63B160B3186F9EED00A2EF54 /* SongJockeyPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SongJockeyPlayer.h; path = SongJockey/SongJockeyPlayer.h; sourceTree = "<group>"; };
+		63B160B4186F9EED00A2EF54 /* SongJockeyPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SongJockeyPlayer.m; path = SongJockey/SongJockeyPlayer.m; sourceTree = "<group>"; };
+		63B160B6186FA17F00A2EF54 /* SongJockeySong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongJockeySong.h; sourceTree = "<group>"; };
+		63B160B7186FA17F00A2EF54 /* SongJockeySong.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SongJockeySong.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +77,7 @@
 				6387523E185E51A30057AB92 /* CoreGraphics.framework in Frameworks */,
 				63875240185E51A30057AB92 /* UIKit.framework in Frameworks */,
 				6387523C185E51A30057AB92 /* Foundation.framework in Frameworks */,
+				63B160B2186F9B2600A2EF54 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,6 +97,12 @@
 		6387522F185E51A30057AB92 = {
 			isa = PBXGroup;
 			children = (
+				63B160B3186F9EED00A2EF54 /* SongJockeyPlayer.h */,
+				63B160B6186FA17F00A2EF54 /* SongJockeySong.h */,
+				63B160B7186FA17F00A2EF54 /* SongJockeySong.m */,
+				63B160B4186F9EED00A2EF54 /* SongJockeyPlayer.m */,
+				6311472D186E6C40003A3E02 /* SongCell.h */,
+				6311472E186E6C40003A3E02 /* SongCell.m */,
 				63875241185E51A30057AB92 /* SongJockey */,
 				63875260185E51A30057AB92 /* SongJockeyTests */,
 				6387523A185E51A30057AB92 /* Frameworks */,
@@ -101,6 +122,7 @@
 		6387523A185E51A30057AB92 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				63B160B1186F9B2600A2EF54 /* AVFoundation.framework */,
 				6387523B185E51A30057AB92 /* Foundation.framework */,
 				6387523D185E51A30057AB92 /* CoreGraphics.framework */,
 				6387523F185E51A30057AB92 /* UIKit.framework */,
@@ -119,6 +141,8 @@
 				63875251185E51A30057AB92 /* SongJockeyViewController.m */,
 				63875253185E51A30057AB92 /* Images.xcassets */,
 				63875242185E51A30057AB92 /* Supporting Files */,
+				6311472A186E6325003A3E02 /* MPMediaItemWrapper.h */,
+				6311472B186E6BFE003A3E02 /* songcell.xib */,
 			);
 			path = SongJockey;
 			sourceTree = "<group>";
@@ -229,6 +253,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6311472C186E6BFE003A3E02 /* songcell.xib in Resources */,
 				63875254185E51A30057AB92 /* Images.xcassets in Resources */,
 				63875246185E51A30057AB92 /* InfoPlist.strings in Resources */,
 				6387524F185E51A30057AB92 /* Main.storyboard in Resources */,
@@ -250,8 +275,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6311472F186E6C40003A3E02 /* SongCell.m in Sources */,
+				63B160B5186F9EED00A2EF54 /* SongJockeyPlayer.m in Sources */,
 				63875252185E51A30057AB92 /* SongJockeyViewController.m in Sources */,
 				63875248185E51A30057AB92 /* main.m in Sources */,
+				63B160B8186FA17F00A2EF54 /* SongJockeySong.m in Sources */,
 				6387524C185E51A30057AB92 /* SongJockeyAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -461,6 +489,7 @@
 				6387526C185E51A30057AB92 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6387526D185E51A30057AB92 /* Build configuration list for PBXNativeTarget "SongJockeyTests" */ = {
 			isa = XCConfigurationList;
@@ -469,6 +498,7 @@
 				6387526F185E51A30057AB92 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
