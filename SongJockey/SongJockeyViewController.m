@@ -8,7 +8,6 @@
 
 #import "SongJockeyViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import "MPMediaItemWrapper.h"
 #import "SongCell.h"
 #import "SongJockeySong.h"
 #import "SongJockeyPlayer.h"

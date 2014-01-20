@@ -8,10 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <MediaPlayer/MediaPlayer.h>
-#import "MPMediaItemWrapper.h"
 #import <AVFoundation/AVFoundation.h>
 
-@interface SongJockeySong :NSObject <MPMediaItemWrapper, NSCopying>
+@interface SongJockeySong :NSObject <NSCopying>
 -(instancetype) initWithItem:(MPMediaItem *)item;
 -(MPMediaItem *) mediaItem;
 @property (weak, nonatomic) MPMediaItem * mediaItem;
