@@ -45,7 +45,7 @@
     SongJockeySong * copy = [[self.class alloc] initWithItem:self.mediaItem];
     copy.seconds = self.seconds;
     copy.avAsset = self.avAsset;
-    
+    copy.userInfo = self.userInfo;
     return copy ;
 }
 

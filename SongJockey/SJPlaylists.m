@@ -118,7 +118,7 @@
 -(void)addSong:(SongJockeySong *)song forDuration:(NSInteger)seconds {
     SongJockeySong * copy = [song copy];
     copy.seconds = seconds;
-    copy.userInfo = song.userInfo;
+
     [self.sjSongs addObject:copy];
 }
 
