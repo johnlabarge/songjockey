@@ -27,8 +27,7 @@
 {
     
     NSInteger start = 0;
-    NSNumber * durationN = [self.mediaItem valueForProperty:MPMediaItemPropertyPlaybackDuration];
-    NSInteger duration = durationN.integerValue;
+    NSInteger duration = self.totalDuration;
     if (self.seconds < duration) {
          NSInteger midpoint = duration/2;
          start = midpoint - self.seconds/2;
@@ -36,12 +35,23 @@
     return start;
     
 }
+-(NSInteger) totalDuration
+{
+    NSNumber * durationN = [self.mediaItem valueForProperty:MPMediaItemPropertyPlaybackDuration];
+    return durationN.integerValue;
+}
 - (id)copyWithZone:(NSZone *)zone
 {
     SongJockeySong * copy = [[self.class alloc] initWithItem:self.mediaItem];
     copy.seconds = self.seconds;
+    copy.avAsset = self.avAsset;
     
     return copy ;
+}
+
+-(BOOL) equals:(SongJockeySong *)otherSong
+{
+    return (otherSong.seconds == self.seconds && [otherSong.url isEqual:self.url] );
 }
 -(BOOL) isICloudItem
 {

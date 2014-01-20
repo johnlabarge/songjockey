@@ -12,41 +12,79 @@
 #import "SongCell.h"
 #import "SongJockeySong.h"
 #import "SongJockeyPlayer.h"
+#import "SJPlaylists.h"
+#import "PlaylistChooserViewController.h"
 
 @interface SongJockeyViewController ()
 
-
+@property (nonatomic, strong) NSIndexPath * currentSongIndexPath;
 @end
 
 @implementation SongJockeyViewController
 
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.songs = [self getSongsForPlayList:@"songjockeylist"];
+    
+    
     self.playForTextField.text=@"5";
     self.playForSeconds = 5;
-    NSLog(@"self.songs.count = %lu", (unsigned long)self.songs.count);
+    NSLog(@"self.songs.count = %lu", (unsigned long)self.songs.songs.count);
     UINib * songCellNib = [UINib  nibWithNibName:@"songcell" bundle:nil];
     [self.songTableView registerNib:songCellNib forCellReuseIdentifier:@"songcell"];
-    [self.songTableView reloadData];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sjtick:) name:@"sjplayertick" object:nil];
-    [self playerButtonsEnabled:NO];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sjtick:) name:kSJTimerNotice object:nil];
+        [self playerButtonsEnabled:NO];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sjNextSong:) name:kSJNextSong object:nil];
 
-    
-    self.sjPlayer = [[SongJockeyPlayer alloc] initWithQueue:self.songs];
-    if (!([self.sjPlayer canLoadWholeQueue])) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Songs unavailable."
-                                                        message: @"Some songs in your playlist weren't available because they haven't been downloaded from iCloud (iTunes Match) yet.  To prevent this message in the future go back to your iPod application and make sure you download all the songs for the playlist." delegate: nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-    } else {
-        [self playerReady];
-    }
+    [self configurePlayForSecondsField];
     
     
     
 	// Do any additional setup after loading the view, typically from a nib.
+}
+
+
+-(void) configurePlayForSecondsField
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardShowing:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardHiding:) name:UIKeyboardWillHideNotification object:nil];
+    
+    self.playForTextField.inputAccessoryView  = [self doneBar];
+    
+
+}
+
+-(UIView *) doneBar
+{
+    UIToolbar * numberToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0,0,320,50)];
+    numberToolbar.barStyle = UIBarStyleDefault;
+   
+   
+     numberToolbar.items = @[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissNumberPad:)]];
+    
+    [numberToolbar sizeToFit];
+    return numberToolbar;
+}
+-(void) setSongs:(SJPlaylist *)songs
+{
+    _songs = songs;
+    [self updateSongsSeconds];
+    self.sjPlayer = [[SongJockeyPlayer alloc] initWithSJPlaylist:_songs];
+    [self.songTableView reloadData];
+    if (!([self.sjPlayer canLoadWholeQueue])) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Songs unavailable."
+                                                        message: @"Some songs in your playlist weren't available because they haven't been downloaded from iCloud (iTunes Match) yet.  To prevent this message in the future go back to your iPod application and make sure you download all the songs for the playlist." delegate: self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    
+        [alert show];
+    
+    } else {
+
+        [self playerReady];
+    }
+    
+
 }
 -(void) sjtick:(NSNotification *) notification
 {
@@ -55,6 +93,20 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         clockLabel.text = [NSString stringWithFormat:@"%d", value];
     });
+}
+-(void) sjNextSong:(NSNotification *)notification
+{
+    __weak SongJockeyViewController * me = self;
+    dispatch_async(dispatch_get_main_queue(), ^{ [me.songTableView reloadData];
+        NSLog(@"currentSong indexPathRow = %d",me.self.sjPlayer.originalIndexOfCurrentSong);
+        
+        NSLog(@"scrolling");
+        [me.songTableView scrollToRowAtIndexPath:[NSIndexPath  indexPathForItem:self.sjPlayer.originalIndexOfCurrentSong inSection:0]
+                                atScrollPosition:UITableViewScrollPositionNone
+                                        animated:YES];
+        
+    });
+
 }
 -(void) playerReady
 {
@@ -74,11 +126,19 @@
 }
 -(void) setPlayForSeconds:(NSInteger)playForSeconds
 {
-      [self.songs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-          SongJockeySong * song = (SongJockeySong *) obj;
-          song.seconds = playForSeconds;
-      }];
-    _playForSeconds = playForSeconds;
+
+     _playForSeconds = playForSeconds;
+    [self updateSongsSeconds];
+    self.sjPlayer = [[SongJockeyPlayer alloc] initWithSJPlaylist:_songs];
+    [self.songTableView reloadData];
+}
+
+-(void) updateSongsSeconds
+{
+    [self.songs eachSong:^(SongJockeySong *song, NSUInteger index, BOOL *stop) {
+        song.seconds = self.playForSeconds;
+    }];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -100,50 +160,83 @@
     [self.sjPlayer next];
 }
 
+
+
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.songs.count;
+    return self.songs.songs.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    SongJockeySong * song = [self.songs objectAtIndex:indexPath.row];
+    SongJockeySong * song = [self.songs.songs objectAtIndex:indexPath.row];
     SongCell * songCell =  (SongCell *)[tableView dequeueReusableCellWithIdentifier:@"songcell"];
-    songCell.title.text =[song songTitle];
+    if (song.isICloudItem) {
+        NSDictionary * attributes = @{NSForegroundColorAttributeName: [UIColor whiteColor], NSStrikethroughStyleAttributeName: [NSNumber numberWithInteger:NSUnderlinePatternSolid | NSUnderlineStyleSingle]};
+        NSAttributedString * songText= [[NSAttributedString alloc] initWithString:song.songTitle attributes:attributes];
+        songCell.title.attributedText = songText;
+    } else {
+          
+        songCell.title.text =[song songTitle];
+    }
+   
+    if ([song equals:self.sjPlayer.currentSong ]) {
+        NSLog(@"row: %d current song: %@",indexPath.row, song.songTitle);
+        self.currentSongIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+        songCell.contentView.backgroundColor = [UIColor yellowColor];
+        songCell.selected=YES;
+
+    } else {
+        songCell.selected = NO;
+        songCell.contentView.backgroundColor = [UIColor blackColor];
+    }
     return songCell;
 }
 
--(NSArray *) getSongsForPlayList:(NSString *)
-thePlaylist{
-    __block NSMutableArray * songs;
-    MPMediaQuery *playlistQuery = [MPMediaQuery playlistsQuery];
-    NSArray * playlists = [playlistQuery collections];
-    __block MPMediaItemCollection * chosenPlaylist;
-    [playlists enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        MPMediaItemCollection *playlist = (MPMediaItemCollection *)obj;
-        if ([[playlist valueForKey:MPMediaPlaylistPropertyName]
-            isEqualToString:thePlaylist]) {
-            chosenPlaylist = playlist;
-            *stop = YES;
-            
-        }
-        
-    }];
-    if (chosenPlaylist != nil) {
-        
-        NSArray * mpMediaItems = [chosenPlaylist items];
-        songs = [[NSMutableArray alloc ] initWithCapacity:mpMediaItems.count];
-        [mpMediaItems enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            SongJockeySong * song = [[SongJockeySong alloc] initWithItem:(MPMediaItem *)obj];
-            [songs addObject:song];
-            NSLog(@" song = %@", song.songTitle );
-        }];
-        
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"playListChooser"]) {
+        PlaylistChooserViewController * plvc = (PlaylistChooserViewController *)segue.destinationViewController;
+        plvc.delegate = self;
     }
-    return songs;
-    
 }
+
+#pragma mark OptionDelegate 
+
+-(void) optionChosen:(NSObject *)option
+{
+    NSString * playListName = (NSString *) option;
+    self.songs = [SJPlaylists getByName:playListName];
+    self.currentPlayListLabel.text = playListName;
+}
+
+#pragma mark UIAlertViewDelegate 
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    [self playerReady];
+}
+
+-(IBAction)dismissNumberPad:(id)sender {
+    self.playForSeconds = [self.playForTextField.text integerValue];
+    
+    [self.playForTextField resignFirstResponder];
+}
+
+-(void) keyboardShowing:(NSNotification *)note
+{
+    NSDictionary * info = note.userInfo;
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y - kbSize.height, self.view.frame.size.width, self.view.frame.size.height);
+}
+
+-(void) keyboardHiding:(NSNotification *)note
+{
+    self.view.frame = CGRectMake(0.0,0.0,self.view.frame.size.width, self.view.frame.size.height);
+}
+
+#pragma mark UITextFieldDelegate
 
 
 

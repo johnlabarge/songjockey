@@ -26,6 +26,9 @@
 		63B160B2186F9B2600A2EF54 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63B160B1186F9B2600A2EF54 /* AVFoundation.framework */; };
 		63B160B5186F9EED00A2EF54 /* SongJockeyPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B160B4186F9EED00A2EF54 /* SongJockeyPlayer.m */; };
 		63B160B8186FA17F00A2EF54 /* SongJockeySong.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B160B7186FA17F00A2EF54 /* SongJockeySong.m */; };
+		63B160BB188C1D0800A2EF54 /* SJConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B160BA188C1D0800A2EF54 /* SJConstants.m */; };
+		63B160BE188C1EA700A2EF54 /* SJPlaylists.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B160BD188C1EA700A2EF54 /* SJPlaylists.m */; };
+		63B160C1188C358000A2EF54 /* PlaylistChooserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B160C0188C358000A2EF54 /* PlaylistChooserViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +70,13 @@
 		63B160B4186F9EED00A2EF54 /* SongJockeyPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SongJockeyPlayer.m; path = SongJockey/SongJockeyPlayer.m; sourceTree = "<group>"; };
 		63B160B6186FA17F00A2EF54 /* SongJockeySong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongJockeySong.h; sourceTree = "<group>"; };
 		63B160B7186FA17F00A2EF54 /* SongJockeySong.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SongJockeySong.m; sourceTree = "<group>"; };
+		63B160B9188C1D0800A2EF54 /* SJConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SJConstants.h; path = SongJockey/SJConstants.h; sourceTree = "<group>"; };
+		63B160BA188C1D0800A2EF54 /* SJConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SJConstants.m; path = SongJockey/SJConstants.m; sourceTree = "<group>"; };
+		63B160BC188C1EA700A2EF54 /* SJPlaylists.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SJPlaylists.h; sourceTree = "<group>"; };
+		63B160BD188C1EA700A2EF54 /* SJPlaylists.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SJPlaylists.m; sourceTree = "<group>"; };
+		63B160BF188C358000A2EF54 /* PlaylistChooserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaylistChooserViewController.h; path = SongJockey/PlaylistChooserViewController.h; sourceTree = "<group>"; };
+		63B160C0188C358000A2EF54 /* PlaylistChooserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaylistChooserViewController.m; path = SongJockey/PlaylistChooserViewController.m; sourceTree = "<group>"; };
+		63B160C2188C380300A2EF54 /* OptionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OptionDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +107,11 @@
 		6387522F185E51A30057AB92 = {
 			isa = PBXGroup;
 			children = (
+				63B160BF188C358000A2EF54 /* PlaylistChooserViewController.h */,
+				63B160C0188C358000A2EF54 /* PlaylistChooserViewController.m */,
+				63B160C2188C380300A2EF54 /* OptionDelegate.h */,
+				63B160B9188C1D0800A2EF54 /* SJConstants.h */,
+				63B160BA188C1D0800A2EF54 /* SJConstants.m */,
 				63B160B3186F9EED00A2EF54 /* SongJockeyPlayer.h */,
 				63B160B6186FA17F00A2EF54 /* SongJockeySong.h */,
 				63B160B7186FA17F00A2EF54 /* SongJockeySong.m */,
@@ -139,6 +154,8 @@
 				6387524D185E51A30057AB92 /* Main.storyboard */,
 				63875250185E51A30057AB92 /* SongJockeyViewController.h */,
 				63875251185E51A30057AB92 /* SongJockeyViewController.m */,
+				63B160BC188C1EA700A2EF54 /* SJPlaylists.h */,
+				63B160BD188C1EA700A2EF54 /* SJPlaylists.m */,
 				63875253185E51A30057AB92 /* Images.xcassets */,
 				63875242185E51A30057AB92 /* Supporting Files */,
 				6311472A186E6325003A3E02 /* MPMediaItemWrapper.h */,
@@ -277,8 +294,11 @@
 			files = (
 				6311472F186E6C40003A3E02 /* SongCell.m in Sources */,
 				63B160B5186F9EED00A2EF54 /* SongJockeyPlayer.m in Sources */,
+				63B160C1188C358000A2EF54 /* PlaylistChooserViewController.m in Sources */,
+				63B160BE188C1EA700A2EF54 /* SJPlaylists.m in Sources */,
 				63875252185E51A30057AB92 /* SongJockeyViewController.m in Sources */,
 				63875248185E51A30057AB92 /* main.m in Sources */,
+				63B160BB188C1D0800A2EF54 /* SJConstants.m in Sources */,
 				63B160B8186FA17F00A2EF54 /* SongJockeySong.m in Sources */,
 				6387524C185E51A30057AB92 /* SongJockeyAppDelegate.m in Sources */,
 			);

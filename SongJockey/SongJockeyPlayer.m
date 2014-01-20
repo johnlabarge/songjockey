@@ -20,8 +20,8 @@
 @property (nonatomic, assign) NSInteger pausedIndex;
 @property (nonatomic, assign) NSInteger pausedTime;
 @property (nonatomic, assign) NSInteger timeUntilSwitch;
-@property (nonatomic, strong) NSMutableArray * songQueue;
-@property (readonly) SongJockeySong * currentSong;
+
+ 
 
 
 @property (nonatomic, assign) NSInteger readyPlayers;
@@ -31,25 +31,26 @@
 @implementation SongJockeyPlayer
 
 
--(instancetype) initWithQueue:(NSArray *)songJockeySongs
+-(instancetype) initWithSJPlaylist:(SJPlaylist *)sjplaylist
 {
     self = [super init];
  
     self.currentIndex=0;
     
-    self.songQueue = [[NSMutableArray alloc] initWithCapacity:songJockeySongs.count];
+    self.songQueue = [[SJPlaylist alloc] initWithCapacity:sjplaylist.count]; 
     
-    [songJockeySongs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        
-        SongJockeySong * song = (SongJockeySong *) obj;
+    
+    [sjplaylist eachSong:^(SongJockeySong *song, NSUInteger index, BOOL *stop) {
         if (!song.isICloudItem) {
-            NSLog(@"creating player for song: %@ %@", song.songTitle, [song.url absoluteString] );
+            NSLog(@"loading asset for song : %@ at %@", song.songTitle, [song.url absoluteString]);
+            
+            song.userInfo = [NSNumber numberWithInteger:index]; 
             [song loadAsset:^{ NSLog(@"loaded asset for %@", song.songTitle);}];
-            [self.songQueue addObject:song];
+            /*can't play for longer than the song */
+            [self.songQueue addSong:song forDuration:MIN(song.seconds,song.totalDuration)];
         } else {
-            self.iCloudItemsPresent = YES; 
+            self.iCloudItemsPresent = YES;
         }
-        
     }];
     
     _playerLoadingQueue = dispatch_queue_create("playerLoading", NULL);
@@ -73,26 +74,30 @@
 -(BOOL) canLoadWholeQueue
 {
     __block BOOL answer;
-    [self.songQueue enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        
-        SongJockeySong * song = (SongJockeySong *) obj;
-        if (song.isICloudItem) {  /*icloud item*/
-            answer = NO;
-            *stop = YES;
-        }
-        
-    }];
+   [self.songQueue eachSong:^(SongJockeySong *song, NSUInteger index, BOOL *stop) {
+      if (song.isICloudItem) {  /*icloud item*/
+          answer = NO;
+          *stop = YES;
+      }
+   }];
+    
     return answer;
 }
 
 -(void) tickNotification
 {
-    NSNotification * note = [NSNotification notificationWithName:@"sjplayertick" object:[NSNumber numberWithInteger:self.timeUntilSwitch]];
+    NSNotification * note = [NSNotification notificationWithName:kSJTimerNotice  object:[NSNumber numberWithInteger:self.timeUntilSwitch]];
+    [[NSNotificationCenter defaultCenter] postNotification:note];
+}
+
+-(void) nextNotification
+{
+    NSNotification *note = [NSNotification notificationWithName:kSJNextSong object:[NSNumber numberWithInteger:self.currentIndex]];
     [[NSNotificationCenter defaultCenter] postNotification:note];
 }
 -(void) readyTimeout
 {
-    NSNotification * note = [NSNotification notificationWithName:@"sjplayerreadytimeout" object:nil];
+    NSNotification * note = [NSNotification notificationWithName:kSJPlayerReadyTimeout object:nil];
     [[NSNotificationCenter defaultCenter] postNotification:note];
 }
 -(void)pause
@@ -116,14 +121,21 @@
 }
 -(SongJockeySong *) currentSong
 {
-    return [self.songQueue objectAtIndex:self.currentIndex];
+    return [self.songQueue songNumber:self.currentIndex];
+}
+-(NSInteger) originalIndexOfCurrentSong
+{
+    return [(NSNumber *)self.currentSong.userInfo integerValue];
 }
 -(void)next
 {
+
     [self.currentPlayer pause];
     self.currentIndex++;
     self.time = 0;
+    [self nextNotification];
     [self playSong];
+    
 }
 -(void)previous
 {

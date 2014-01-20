@@ -8,12 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "SongJockeyPlayer.h"
-@interface SongJockeyViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> 
+#import "SJConstants.h"
+#import "SJPlaylists.h"
+#import "OptionDelegate.h"
+
+@interface SongJockeyViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, OptionDelegate, UIAlertViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *currentPlayListLabel;
 @property (weak, nonatomic) IBOutlet UITableView *songTableView;
 @property (weak, nonatomic) IBOutlet UITextField *playForTextField;
 @property (strong, nonatomic) NSString * thePlaylist;
-@property (strong, nonatomic) NSArray * songs;
+@property (strong, nonatomic) SJPlaylist * songs;
 @property (nonatomic, assign) NSInteger playForSeconds;
 @property (weak, nonatomic) IBOutlet UIButton *previousButton;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
