@@ -73,9 +73,9 @@
 		63B160BD188C1EA700A2EF54 /* SJPlaylists.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SJPlaylists.m; path = SongJockey/SJPlaylists.m; sourceTree = "<group>"; };
 		63B160BF188C358000A2EF54 /* PlaylistChooserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaylistChooserViewController.h; path = SongJockey/PlaylistChooserViewController.h; sourceTree = "<group>"; };
 		63B160C0188C358000A2EF54 /* PlaylistChooserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaylistChooserViewController.m; path = SongJockey/PlaylistChooserViewController.m; sourceTree = "<group>"; };
-		63B160C2188C380300A2EF54 /* OptionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OptionDelegate.h; sourceTree = "<group>"; };
 		63B160C3188D9CC100A2EF54 /* SongJockeySong.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SongJockeySong.m; path = SongJockey/SongJockeySong.m; sourceTree = "<group>"; };
 		63B160C4188D9CC100A2EF54 /* SongJockeySong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SongJockeySong.h; path = SongJockey/SongJockeySong.h; sourceTree = "<group>"; };
+		63B3F65A189D4C2C0087460A /* OptionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,10 +106,10 @@
 		6387522F185E51A30057AB92 = {
 			isa = PBXGroup;
 			children = (
+				63B3F65A189D4C2C0087460A /* OptionDelegate.h */,
 				63B160C6188D9CD900A2EF54 /* SJPlayer */,
 				63B160BF188C358000A2EF54 /* PlaylistChooserViewController.h */,
 				63B160C0188C358000A2EF54 /* PlaylistChooserViewController.m */,
-				63B160C2188C380300A2EF54 /* OptionDelegate.h */,
 				6311472D186E6C40003A3E02 /* SongCell.h */,
 				6311472E186E6C40003A3E02 /* SongCell.m */,
 				63875241185E51A30057AB92 /* SongJockey */,

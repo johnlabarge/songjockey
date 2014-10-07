@@ -37,6 +37,7 @@
 
 @interface SJPlaylists : NSObject
 
++(BOOL) availableFor:(NSString *)name;
 
 +(NSArray *)availablePlaylists;
 +(SJPlaylist *)getByName:(NSString *)name;

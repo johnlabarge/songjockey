@@ -9,4 +9,6 @@
 #import "SJConstants.h"
 NSString *const kSJTimerNotice = @"sjplayertick";
 NSString *const kSJPlayerReadyTimeout = @"sjplayertimeout";
+NSString *const kSJPlayingNotice = @"sjplaying";
+NSString *const kSJPausedNotice = @"sjpaused";
 NSString *const kSJNextSong = @"sjnextsong"; 

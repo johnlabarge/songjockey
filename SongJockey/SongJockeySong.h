@@ -19,9 +19,10 @@
 @property (readonly) NSInteger totalDuration;
 @property (readonly) NSURL * url;
 @property (readonly) NSString * songTitle;
+@property (readonly) NSString * songArtist;
 @property (readonly) BOOL isICloudItem;
 @property (strong, nonatomic) AVURLAsset * avAsset;
-@property (strong, nonatomic) NSObject *userInfo;
+@property (strong, nonatomic) NSMutableDictionary *userInfo;
 -(void) loadAsset:(void (^)(void))complete;
 -(BOOL) equals:(SongJockeySong *)otherSong;
 

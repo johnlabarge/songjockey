@@ -9,6 +9,9 @@
 #import "SongJockeyPlayer.h"
 #import "SongJockeySong.h"
 #import "AVFoundation/AVPlayer.h"
+#import <AVFoundation/AVFoundation.h>
+#import <AudioToolbox/AudioToolbox.h>
+
 @interface SongJockeyPlayer() {
         dispatch_queue_t _timer_queue;
         dispatch_source_t _timer;
@@ -19,8 +22,9 @@
 @property (nonatomic, assign) NSInteger time;
 @property (nonatomic, assign) NSInteger pausedIndex;
 @property (nonatomic, assign) NSInteger pausedTime;
-@property (nonatomic, assign) NSInteger timeUntilSwitch;
-
+@property (nonatomic, strong) NSOperationQueue * fadingQueue;
+@property (nonatomic, strong) NSOperation * fadeInOp;
+@property (nonatomic, strong) NSOperation * fadeOutOp;
  
 
 
@@ -33,18 +37,23 @@
 
 -(instancetype) initWithSJPlaylist:(SJPlaylist *)sjplaylist
 {
+    
+    NSLog(@"Songjockey init...");
     self = [super init];
  
     self.currentIndex=0;
     
-    self.songQueue = [[SJPlaylist alloc] initWithCapacity:sjplaylist.count]; 
+    self.songQueue = [[SJPlaylist alloc] initWithCapacity:sjplaylist.count];
+    self.fadingQueue = [[NSOperationQueue alloc] init];
+    
+    
     
     
     [sjplaylist eachSong:^(SongJockeySong *song, NSUInteger index, BOOL *stop) {
         if (!song.isICloudItem) {
             NSLog(@"loading asset for song : %@ at %@", song.songTitle, [song.url absoluteString]);
             
-            song.userInfo = [NSNumber numberWithInteger:index]; 
+            song.userInfo[@"index"] = [NSNumber numberWithInteger:index];
             [song loadAsset:^{ NSLog(@"loaded asset for %@", song.songTitle);}];
             /*can't play for longer than the song */
             [self.songQueue addSong:song forDuration:MIN(song.seconds,song.totalDuration)];
@@ -55,19 +64,66 @@
     
     _playerLoadingQueue = dispatch_queue_create("playerLoading", NULL);
     
-
+    
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    
+    NSError *setCategoryError = nil;
+    BOOL success = [audioSession setCategory:AVAudioSessionCategoryPlayback error:&setCategoryError];
+    if (!success) {
+    
+        NSLog(@"audio session setCategory error: %@",[setCategoryError localizedDescription]);
+    
+    }
+    
+    NSError *activationError = nil;
+    success = [audioSession setActive:YES error:&activationError];
+    if (!success) {
+        NSLog(@"audio session activation Error: %@",[activationError localizedDescription]);
+    }
+    [self calculateTotalTime];
    
     return self;
 }
--(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{ }
+
+-(void) calculateTotalTime
+{
+    __block NSInteger totalSeconds = 0;
+    [self.songQueue eachSong:^(SongJockeySong *song, NSUInteger index, BOOL *stop) {
+        totalSeconds+= song.seconds;
+    }];
+    self.totalRemainingTime = totalSeconds;
+}
+-(void) setIsPlaying:(BOOL)playing
+{
+    _isPlaying = playing;
+    if (playing) {
+        NSNotification * note = [NSNotification notificationWithName:kSJPlayingNotice  object:nil];
+        [[NSNotificationCenter defaultCenter] postNotification:note];
+    } else {
+        NSNotification * note = [NSNotification notificationWithName:kSJPausedNotice object:nil];
+        [[NSNotificationCenter defaultCenter] postNotification:note];
+    }
+}
 -(void) timerTick
 {
     self.time++;
-    self.timeUntilSwitch--;
-    if (self.timeUntilSwitch <= 0) {
-        [self next];
+    self.remainingSeconds--;
+    __weak typeof(self) weakSelf;
+    if (self.remainingSeconds == 2) {
+         [self.fadingQueue addOperationWithBlock:^{
+             [weakSelf fadeOut];
+         }];
     }
+    
+    if (self.remainingSeconds <= 0) {
+        [self next];
+    } else {
+        
+        self.totalRemainingTime--;
+        NSLog(@"total remaining time : %@", @(self.totalRemainingTime));
+    }
+    
+    
     [self tickNotification];
 }
 
@@ -86,7 +142,7 @@
 
 -(void) tickNotification
 {
-    NSNotification * note = [NSNotification notificationWithName:kSJTimerNotice  object:[NSNumber numberWithInteger:self.timeUntilSwitch]];
+    NSNotification * note = [NSNotification notificationWithName:kSJTimerNotice  object:[NSNumber numberWithInteger:self.remainingSeconds]];
     [[NSNotificationCenter defaultCenter] postNotification:note];
 }
 
@@ -103,6 +159,7 @@
 -(void)pause
 {
     [self.currentPlayer pause];
+    self.isPlaying = NO;
     [self killTimer];
 }
 -(void) fixIndex
@@ -125,22 +182,26 @@
 }
 -(NSInteger) originalIndexOfCurrentSong
 {
-    return [(NSNumber *)self.currentSong.userInfo integerValue];
+    return [(NSNumber *)self.currentSong.userInfo[@"index"] integerValue];
 }
 -(void)next
 {
-
-    [self.currentPlayer pause];
+   // [self.currentPlayer pause];
+   // [NSThread sleepForTimeInterval:0.5];
     self.currentIndex++;
     self.time = 0;
+    self.remainingSeconds = self.currentSong.seconds;
     [self nextNotification];
     [self playSong];
+    NSLog(@"going to next song: %@, index :%ld", self.currentSong.songTitle, (long)self.currentIndex);
     
 }
 -(void)previous
 {
     [self.currentPlayer pause];
     self.currentIndex--;
+    self.time=0;
+    self.remainingSeconds = self.currentSong.seconds;
     [self playSong];
 }
 -(void)playSong
@@ -163,14 +224,58 @@
     }
     NSInteger startSeconds = currentSong.startSeconds;
     if (self.time > 0) {
+        NSLog(@"self.time = %ld",(long)self.time);
         startSeconds += self.time;
     } else {
-        self.timeUntilSwitch = currentSong.seconds;
+        self.remainingSeconds = currentSong.seconds;
     }
-   
+    NSMutableDictionary * playInfo = [NSMutableDictionary dictionaryWithDictionary:@{MPMediaItemPropertyTitle: (self.currentSong.songTitle? self.currentSong.songTitle : @"Untitled")}];
+    NSObject * artwork = [self.currentSong.mediaItem valueForProperty:MPMediaItemPropertyArtwork];
+    if (artwork) {
+        playInfo[MPMediaItemPropertyArtwork] = artwork;
+    }
+    [MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo =playInfo;
+    [self calculateRemainingTime];
     [self playWhenReady];
     
     
+}
+-(void) calculateRemainingTime
+{
+    __block NSInteger remainingTime = 0;
+    [self.songQueue eachSong:^(SongJockeySong *song, NSUInteger index, BOOL *stop) {
+        if (index >= self.currentIndex) {
+            remainingTime += song.seconds;
+        }
+    }];
+    NSLog(@"remaining time = %@", @(remainingTime));
+    self.totalRemainingTime = remainingTime;
+}
+-(void) fadeIn
+{
+    if (self.currentPlayer.volume >= 1.0f) return;
+    else {
+        self.currentPlayer.volume+=0.10;
+        __weak typeof (self) weakSelf = self;
+        [NSThread sleepForTimeInterval:0.2f];
+        [self.fadingQueue addOperationWithBlock:^{
+            NSLog(@"fading in %.2f", self.currentPlayer.volume);
+            [weakSelf fadeIn];
+        }];
+    }
+}
+-(void) fadeOut
+{
+    if (self.currentPlayer.volume <= 0.0f) return;
+    else {
+        self.currentPlayer.volume -=0.1;
+        __weak typeof (self) weakSelf = self;
+        [NSThread sleepForTimeInterval:0.2f];
+        [self.fadingQueue addOperationWithBlock:^{
+            NSLog(@"fading out %.2f", self.currentPlayer.volume);
+            [weakSelf fadeIn];
+        }];
+    }
 }
 -(void) playWhenReady
 {
@@ -181,10 +286,15 @@
             if (me.currentPlayer.status == AVPlayerStatusReadyToPlay && me.currentPlayer.status == AVPlayerItemStatusReadyToPlay)
                 break;
         }
+        me.currentPlayer.volume = 0.0;
         [me.currentPlayer play];
-        [me.currentPlayer seekToTime:CMTimeMake(me.currentSong.startSeconds,1)];
-        
+        [me.currentPlayer seekToTime:CMTimeMake(me.currentSong.startSeconds+self.time,1)];
+     
+        [me.fadingQueue addOperationWithBlock:^{
+            [me fadeIn];
+        }];
         [me createTimer];
+         me.isPlaying = YES;
     });
 
     

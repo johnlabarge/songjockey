@@ -11,3 +11,5 @@
 FOUNDATION_EXPORT NSString *const kSJTimerNotice;
 FOUNDATION_EXPORT NSString *const kSJPlayerReadyTimeout;
 FOUNDATION_EXPORT NSString *const kSJNextSong;
+FOUNDATION_EXPORT NSString *const kSJPlayingNotice;
+FOUNDATION_EXPORT NSString *const kSJPausedNotice;

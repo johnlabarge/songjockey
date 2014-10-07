@@ -45,6 +45,12 @@
         [self.playListNames addObject:name];
     }];
 }
+
+-(BOOL) playListAvailable:(NSString *)name
+{
+     MPMediaItemCollection * mediaPlaylist = (MPMediaItemCollection *) [self.mediaPlaylistsByName objectForKey:name];
+    return (mediaPlaylist != nil);
+}
 -(SJPlaylist *)sjplaylist:(NSString *)name
 {
     MPMediaItemCollection * mediaPlaylist = (MPMediaItemCollection *) [self.mediaPlaylistsByName objectForKey:name];
@@ -70,6 +76,10 @@
 {
     SJPlaylists * instance = [self instance];
     return instance.playListNames;
+}
++(BOOL)availableFor:(NSString *)name
+{
+    return [[self instance] playListAvailable:name];
 }
 
 @end
