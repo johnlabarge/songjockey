@@ -111,7 +111,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "42"
             endingLineNumber = "42"
-            landmarkName = "+getByName:"
+            landmarkName = "+availablePlaylists"
             landmarkType = "4">
          </BreakpointContent>
       </BreakpointProxy>

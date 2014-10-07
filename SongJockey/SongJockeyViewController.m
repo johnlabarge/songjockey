@@ -27,7 +27,6 @@
 {
     [super viewDidLoad];
     
-    changeplay
     self.playForTextField.text=@"5";
     self.playForSeconds = 5;
     NSLog(@"self.songs.count = %lu", (unsigned long)self.songs.songs.count);
